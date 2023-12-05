@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Button, Alert } from 'react-bootstrap';
-import ListNotes from './ListNotes';
 
 const AddNotes: React.FC = () => {
     const [expanded, setExpanded] = useState(false);
@@ -108,7 +107,6 @@ const AddNotes: React.FC = () => {
                         )}
                     </Card.Body>
                 </Card>
-                <ListNotes />
             </div>
         </div>
     );

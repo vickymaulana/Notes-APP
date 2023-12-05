@@ -1,0 +1,49 @@
+/* ListNotes.module.css */
+.container {
+  padding: 20px;
+}
+
+.searchBox {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  background-color: #f8f9fa;
+  border: 1px solid #ddd;
+}
+
+.searchIcon {
+  margin-right: 10px;
+  color: #6c757d;
+}
+
+.cardContainer {
+  margin: 0 -15px;
+}
+
+.cardHoverEffect {
+  transition: transform 0.2s;
+  border-radius: 10px;
+}
+
+.cardHoverEffect:hover {
+  transform: scale(1.03);
+  cursor: pointer;
+}
+
+.cardBody {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.modalFade {
+  animation: fadeIn 0.5s;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}

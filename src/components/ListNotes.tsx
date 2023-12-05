@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Row, Col, Form, Modal, Button } from 'react-bootstrap';
+import { FaSearch } from 'react-icons/fa'; // Importing search icon
+import styles from './ListNotes.module.css'; // Importing the CSS module
 
 interface Note {
     id: string;
@@ -16,7 +18,7 @@ const ListNotes: React.FC = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch('https://api.contoh.com/notes');
+                const response = await fetch('https://655771b0bd4bcef8b612a862.mockapi.io/api/v1/notes');
                 if (response.ok) {
                     const data = await response.json();
                     setNotes(data);
@@ -53,7 +55,7 @@ const ListNotes: React.FC = () => {
 
     const handleDeleteNote = async (noteId: string) => {
         try {
-            await fetch(`https://api.contoh.com/notes/${noteId}`, {
+            await fetch(`https://655771b0bd4bcef8b612a862.mockapi.io/api/v1/notes/${noteId}`, {
                 method: 'DELETE'
             });
             setNotes(prevNotes => prevNotes.filter(note => note.id !== noteId));
@@ -69,7 +71,7 @@ const ListNotes: React.FC = () => {
 
     const handleUpdateNote = async (updatedNote: Note) => {
         try {
-            const response = await fetch(`https://api.contoh.com/notes/${updatedNote.id}`, {
+            const response = await fetch(`https://655771b0bd4bcef8b612a862.mockapi.io/api/v1/notes/${updatedNote.id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -91,40 +93,42 @@ const ListNotes: React.FC = () => {
     };
 
     return (
-        <div>
-            <Form.Control
-                type="text"
-                placeholder="Search by title"
-                value={searchTerm}
-                onChange={e => setSearchTerm(e.target.value)}
-            />
-
-            <div style={{ margin: '10px -200px 200px -20px' }}>
-                <Row xs={1} md={2} lg={3} className="g-4">
-                    {filteredNotes.map((note, index) => (
-                        <Col key={index}>
-                            <Card
-                                className="shadow"
-                                onClick={() => handleNoteClick(note)}
-                                style={{ height: '200px', width: '200px', margin: '10px 10px 20px 10px' }}
-                            >
-                                <Card.Body style={{ height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-                                    <Card.Title>{note.title}</Card.Title>
-                                    <Card.Text>
-                                        {note.description.length > 30
-                                            ? `${note.description.substring(0, 30)}...`
-                                            : note.description}
-                                    </Card.Text>
+        <div className={styles.container}>
+            <div className={styles.searchBox}>
+                <FaSearch className={styles.searchIcon} />
+                <Form.Control
+                    type="text"
+                    placeholder="Search notes by title..."
+                    value={searchTerm}
+                    onChange={e => setSearchTerm(e.target.value)}
+                />
+            </div>
+    
+            <Row xs={1} md={2} lg={3} className={`g-4 ${styles.cardContainer}`}>
+                {filteredNotes.map((note, index) => (
+                    <Col key={index}>
+                        <Card
+                            className={`shadow ${styles.cardHoverEffect}`}
+                            onClick={() => handleNoteClick(note)}
+                        >
+                            <Card.Body className={styles.cardBody}>
+                                <Card.Title>{note.title}</Card.Title>
+                                <Card.Text>
+                                    {note.description.length > 30
+                                        ? `${note.description.substring(0, 30)}...`
+                                        : note.description}
+                                </Card.Text>
+                                <div>
                                     <Button variant="primary" onClick={(e) => { e.stopPropagation(); handleEditNote(note); }}>Edit</Button>
                                     <Button variant="danger" onClick={(e) => { e.stopPropagation(); handleDeleteNote(note.id); }}>Delete</Button>
-                                </Card.Body>
-                            </Card>
-                        </Col>
-                    ))}
-                </Row>
-            </div>
+                                </div>
+                            </Card.Body>
+                        </Card>
+                    </Col>
+                ))}
+            </Row>
 
-            <Modal show={selectedNote !== null} onHide={handleCloseModal}>
+            <Modal show={selectedNote !== null} onHide={handleCloseModal} className={styles.modalFade}>
                 <Modal.Header closeButton>
                     <Modal.Title>Edit Note</Modal.Title>
                 </Modal.Header>
